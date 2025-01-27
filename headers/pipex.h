@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:05:46 by abosc             #+#    #+#             */
-/*   Updated: 2025/01/25 04:16:57 by abosc            ###   ########.fr       */
+/*   Updated: 2025/01/27 23:42:47 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 // # include <stdlib.h>
 # include <fcntl.h>
+# include "../libft/libft.h"
 
 int		verify_args(int argc, char **argv);
 int		access_file(char *file);

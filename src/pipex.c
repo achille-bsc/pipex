@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 23:10:10 by abosc             #+#    #+#             */
-/*   Updated: 2025/01/25 04:16:42 by abosc            ###   ########.fr       */
+/*   Created: 2025/01/28 23:10:10 by abosc             #+#    #+#             */
+/*   Updated: 2025/01/28 00:21:13 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,26 @@ void	start_pipex(char *cmd1, char *cmd2, char *file1, char *file2)
 {
 	int		fd[2];
 	pid_t	pid;
+	pid_t	pid2;
 
-	pipe(fd);
+	fd[0] = open(file1, O_RDONLY);
+	if (fd[0] == -1)
+		exit(1);
+	fd[1] = open(file2, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd[1] == -1)
+		exit(1);
+	if (pipe(fd) == -1)
+		exit(1);
 	pid = fork();
+	if (pid == -1)
+		exit(1);
 	if (pid == 0)
-	{
-		close(fd[1]);
-		dup2(fd[0], 0);
-		close(fd[0]);
-		execve(cmd2, (char *[]){cmd2, file2, NULL}, NULL);
-	}
-	else
-	{
-		close(fd[0]);
-		dup2(fd[1], 1);
-		close(fd[1]);
-		execve(cmd1, (char *[]){cmd1, file1, NULL}, NULL);
-	}
+		child_cmd_executer(cmd1, fd, pid);
+	pid2 = fork();
+	if (pid2 == -1)
+		exit(1);
+	if (pid2 == 0)
+		parent_cmd_executer(cmd2, fd, pid);
+	waitpid(pid, NULL, 0);
+	waitpid(pid, NULL, 0);
 }

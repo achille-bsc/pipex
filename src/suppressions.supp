@@ -1,0 +1,6 @@
+{
+	All External Commands
+	Memcheck:Leak
+	...
+	obj:*/usr/bin/*
+}

@@ -23,7 +23,7 @@ $(NAME): $(OBJS)
 		(echo "$(TERM_UP)$(RED)Error in libft compilation!$(DEF_COLOR)" && exit 1)
 #	 @$(MAKE) -C $(LIBX) -s all ||\
 #	 	(echo "$(TERM_UP)$(RED)Error in MLX compilation!$(DEF_COLOR)" && exit 1)
-	@$(CC) $(CFLAGS) $(OBJS) -L $(LIBFT) -o $(NAME) || \
+	@$(CC) $(CFLAGS) $(OBJS) -L $(LIBFT) -lft -o $(NAME) || \
 		(echo "$(TERM_UP)$(RED)Error during linking!$(DEF_COLOR)" && exit 1)
 
 %.o: %.c

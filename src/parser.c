@@ -6,13 +6,13 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:03:14 by abosc             #+#    #+#             */
-/*   Updated: 2025/01/25 04:15:34 by abosc            ###   ########.fr       */
+/*   Updated: 2025/01/28 01:16:40 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/pipex.h"
 
-int verify_args(int argc, char **argv)
+int	verify_args(int argc, char **argv)
 {
 	if (argc != 5)
 	{
@@ -32,9 +32,9 @@ int verify_args(int argc, char **argv)
 	return (1);
 }
 
-int access_file(char *file)
+int	access_file(char *file)
 {
-	int fd;
+	int	fd;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)

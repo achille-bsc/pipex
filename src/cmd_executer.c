@@ -6,11 +6,24 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:02:39 by abosc             #+#    #+#             */
-/*   Updated: 2025/02/10 18:21:04 by abosc            ###   ########.fr       */
+/*   Updated: 2025/02/19 03:12:47 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/pipex.h"
+
+void	free_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
 
 void	child_cmd_executer(char *cmd, char **env)
 {
@@ -26,29 +39,54 @@ void	child_cmd_executer(char *cmd, char **env)
 		ft_putstr_fd("pipex: command not found: ", 2);
 		ft_putstr_fd(cmd_args[0], 2);
 		ft_putstr_fd("\n", 2);
-		exit(127);
+		(free_tab(cmd_args), free(path), exit(127));
 	}
 	if (execve(path, cmd_args, env) == -1)
 	{
 		ft_putstr_fd("pipex | command not found: \n", 2);
 		ft_putstr_fd(ft_strjoin("pipex | ", cmd_args[0]), 2);
 		ft_putstr_fd("\n", 2);
-		exit(127);
+		(free_tab(cmd_args), free(path), exit(127));
 	}
+	free(path);
+	free_tab(cmd_args);
 }
 
-char *get_path(char *cmd, char **env)
+static inline char *sida(char **path, char *cmd, char *path_str, char *temp, int i)
 {
-	int     i;
-	char    **path;
-	char    *path_str;
+	while (path[i])
+	{
+		path_str = ft_strjoin(path[i], "/");
+		if (!path_str)
+			return (NULL);
+		temp = ft_strjoin(path_str, cmd);
+		if (!temp)
+			return (NULL);
+		free(path_str);
+		if (access(temp, F_OK) == 0)
+		{
+			free_tab(path);
+			return (temp);
+		}
+		free(temp);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*get_path(char *cmd, char **env)
+{
+	int		i;
+	char	**path;
+	char	*path_str;
+	char	*temp;
 
 	i = 0;
 	path = NULL;
-	
+	path_str = NULL;
+	temp = NULL;
 	if (access(cmd, F_OK) == 0)
-		return cmd;
-
+		return (cmd);
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
@@ -59,14 +97,8 @@ char *get_path(char *cmd, char **env)
 		i++;
 	}
 	i = 0;
-	while (path[i])
-	{
-		path_str = ft_strjoin(path[i], "/");
-		path_str = ft_strjoin(path_str, cmd);
-		if (access(path_str, F_OK) == 0)
-			return (path_str);
-		i++;
-	}
+	sida(path, cmd, path_str, temp, i);
+	free_tab(path);
 	return (NULL);
 }
 
@@ -74,6 +106,7 @@ void	parent_cmd_executer(char *cmd, char **env)
 {
 	char	**cmd_args;
 	char	*path;
+	char	*temp;
 	int		i;
 
 	i = 0;
@@ -82,8 +115,12 @@ void	parent_cmd_executer(char *cmd, char **env)
 	if (path == NULL)
 	{
 		ft_putstr_fd("pipex | command not found: ", 2);
-		ft_putstr_fd(ft_strjoin("pipex | ", cmd_args[0]), 2);
+		temp = ft_strjoin("pipex | ", cmd_args[0]);
+		ft_putstr_fd(temp, 2);
+		free(temp);
 		ft_putstr_fd("\n", 2);
+		free_tab(cmd_args);
+		free(path);
 		exit(127);
 	}
 	if (execve(path, cmd_args, env) == -1)
@@ -91,8 +128,12 @@ void	parent_cmd_executer(char *cmd, char **env)
 		ft_putstr_fd("pipex | command not found: \n", 2);
 		ft_putstr_fd(ft_strjoin("pipex | ", cmd_args[0]), 2);
 		ft_putstr_fd("\n", 2);
+		free_tab(cmd_args);
+		free(path);
 		exit(127);
 	}
+	free_tab(cmd_args);
+	free(path);
 }
 
 void	child(int p_fd[2], int fd[2], t_values cmds, char **env)

@@ -6,7 +6,11 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:02:39 by abosc             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/24 00:16:08 by abosc            ###   ########.fr       */
+=======
+/*   Updated: 2025/02/19 03:12:47 by abosc            ###   ########.fr       */
+>>>>>>> 690f52df945d8197a52f96c8574c6070d32bade9
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +90,15 @@ char	*get_path(char *cmd, char **env)
 	path = NULL;
 	path_str = NULL;
 	temp = NULL;
+<<<<<<< HEAD
 	write(1, "mebi\n", 5);
 	if (access(cmd, F_OK) == 0)
 		return (cmd);
 	write(1, "ici\n", 4);
+=======
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
+>>>>>>> 690f52df945d8197a52f96c8574c6070d32bade9
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
@@ -102,7 +111,10 @@ char	*get_path(char *cmd, char **env)
 	i = 0;
 	sida(path, cmd, path_str, temp, i);
 	free_tab(path);
+<<<<<<< HEAD
 	write(1, "la\n", 3);
+=======
+>>>>>>> 690f52df945d8197a52f96c8574c6070d32bade9
 	return (NULL);
 }
 

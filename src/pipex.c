@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:10:10 by abosc             #+#    #+#             */
-/*   Updated: 2025/01/28 01:48:49 by abosc            ###   ########.fr       */
+/*   Updated: 2025/02/13 19:44:40 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void	start_pipex(t_values cmds, t_values files, char **env)
 	pid_t	pid2;
 
 	fd[0] = open(files.value1, O_RDONLY);
-	fd[1] = open(files.value2, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd[0] == -1 || fd[1] == -1 || pipe(p_fd) == -1)
+	fd[1] = open(files.value2, O_CREAT | O_TRUNC | O_WRONLY, 0755);
+	if (pipe(p_fd) == -1)
 		exit(1);
 	pid1 = fork();
 	if (pid1 == -1)
 		exit(1);
-	if (pid1 == 0)
+	if (pid1 == 0 && fd[0] != -1)
 		child(p_fd, fd, cmds, env);
 	pid2 = fork();
 	if (pid2 == -1)

@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:05:46 by abosc             #+#    #+#             */
-/*   Updated: 2025/01/28 01:38:07 by abosc            ###   ########.fr       */
+/*   Updated: 2025/02/19 02:23:08 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,6 @@ void	child_cmd_executer(char *cmd, char **env);
 void	parent_cmd_executer(char *cmd, char **env);
 void	child(int p_fd[2], int fd[2], t_values cmds, char **env);
 void	parent(int p_fd[2], int fd[2], t_values cmds, char **env);
+char	*get_path(char *cmd, char **env);
+void	free_tab(char **tab);
 #endif

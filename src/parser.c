@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:03:14 by abosc             #+#    #+#             */
-/*   Updated: 2025/01/28 01:16:40 by abosc            ###   ########.fr       */
+/*   Updated: 2025/02/13 19:20:28 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@ int	verify_args(int argc, char **argv)
 	if (access_file(argv[1]) == -1)
 	{
 		printf("Error: File %s does not exist\n", argv[1]);
-		return (0);
 	}
-	if (access_file(argv[4]) == -1)
-	{
-		printf("Error: File %s does not exist\n", argv[4]);
-		return (0);
-	}
+	// if (access_file(argv[4]) == -1)
+	// {
+	// 	// printf("Error: File %s does not exist\n", argv[4]);
+	// 	return (1);
+	// }
 	return (1);
 }
 

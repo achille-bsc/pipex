@@ -1,0 +1,6 @@
+--track-fds=yes
+--track-origins=yes
+--keep-debuginfo=yes
+--leak-check=full
+--show-leak-kinds=all
+--suppressions=suppressions.supp

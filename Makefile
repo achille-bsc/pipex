@@ -6,7 +6,7 @@ NAME = pipex
 LIBFT = libft
 # LIBX = libs/minilibx-linux
 
-include Sources.mk
+SRCS := src/main.c src/parser.c src/pipex.c src/cmd_executer.c
 
 GREEN = \033[32m
 RED = \033[31m

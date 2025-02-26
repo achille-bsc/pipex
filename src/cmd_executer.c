@@ -6,26 +6,11 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:02:39 by abosc             #+#    #+#             */
-/*   Updated: 2025/02/26 01:31:14 by abosc            ###   ########.fr       */
+/*   Updated: 2025/02/26 04:56:20 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/pipex.h"
-
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		tab[i] = NULL;
-		i++;
-	}
-	free(tab);
-	tab = NULL;
-}
 
 void	child_cmd_executer(char *cmd, char **env)
 {
@@ -55,29 +40,6 @@ void	child_cmd_executer(char *cmd, char **env)
 	free_tab(cmd_args);
 }
 
-static inline char	*sida(char **path, char *cmd, char *path_str, char *temp,
-		int i)
-{
-	while (path[i])
-	{
-		path_str = ft_strjoin(path[i], "/");
-		if (!path_str)
-			return (NULL);
-		temp = ft_strjoin(path_str, cmd);
-		if (!temp)
-			return (NULL);
-		free(path_str);
-		if (access(temp, F_OK) == 0)
-		{
-			free_tab(path);
-			return (temp);
-		}
-		free(temp);
-		i++;
-	}
-	return (NULL);
-}
-
 char	*get_path(char *cmd, char **env)
 {
 	int		i;
@@ -88,21 +50,19 @@ char	*get_path(char *cmd, char **env)
 	i = 0;
 	path = NULL;
 	path_str = NULL;
-	temp = NULL;
 	if (access(cmd, F_OK) == 0)
 		return (ft_strjoin("/bin/", cmd));
-	while (env[i])
+	path = truc(i, env, path);
+	i = 0;
+	while (path[i])
 	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-		{
-			path = ft_split(env[i] + 5, ':');
-			break ;
-		}
+		temp = gpath_end(path_str, path, cmd, i);
+		if (temp)
+			return (temp);
 		i++;
 	}
-	i = 0;
-	sida(path, cmd, path_str, temp, i);
-	free_tab(path);
+	if (path)
+		free_tab(path);
 	return (NULL);
 }
 
@@ -136,18 +96,13 @@ void	parent_cmd_executer(char *cmd, char **env)
 
 void	child(int p_fd[2], int fd[2], t_values cmds, char **env)
 {
-	dup2(fd[0], 0);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(p_fd[1], STDOUT_FILENO);
 	if (fd[1] != -1)
 		close(fd[1]);
-	// write(1, "ici\n", 4);
-	dup2(p_fd[1], 1);
-	// write(1, "ici\n", 4);
-	if (fd[0] != -1)
-		close(fd[0]);
-	if (fd[1] != -1)
-		close(fd[1]);
-	if (p_fd[1] != -1)
-		close(p_fd[1]);
+	if (p_fd[0] != -1)
+		close(p_fd[0]);
+	closer(fd, p_fd);
 	child_cmd_executer(cmds.value1, env);
 }
 
@@ -155,13 +110,12 @@ void	parent(int p_fd[2], int fd[2], t_values cmds, char **env)
 {
 	if (p_fd[1] != -1)
 		close(p_fd[1]);
-	dup2(p_fd[0], 0);
-	dup2(fd[1], 1);
-	if (fd[0] != -1)
-		close(fd[0]);
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(p_fd[0], STDIN_FILENO);
 	if (fd[1] != -1)
 		close(fd[1]);
-	if (p_fd[0] != -1)
-		close(p_fd[0]);
+	if (p_fd[1] != -1)
+		close(p_fd[1]);
+	closer(fd, p_fd);
 	parent_cmd_executer(cmds.value2, env);
 }

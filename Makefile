@@ -6,7 +6,7 @@ NAME = pipex
 LIBFT = libft
 # LIBX = libs/minilibx-linux
 
-SRCS := src/main.c src/parser.c src/pipex.c src/cmd_executer.c
+SRCS := src/main.c src/parser.c src/pipex.c src/cmd_executer.c src/gpath_utils.c src/utils.c
 
 GREEN = \033[32m
 RED = \033[31m

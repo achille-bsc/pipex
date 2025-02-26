@@ -6,11 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:02:39 by abosc             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/24 02:06:38 by abosc            ###   ########.fr       */
-=======
-/*   Updated: 2025/02/24 01:29:01 by abosc            ###   ########.fr       */
->>>>>>> 1995049b4245b07f9e523da85495188c5a04e73a
+/*   Updated: 2025/02/26 01:31:14 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +90,7 @@ char	*get_path(char *cmd, char **env)
 	path_str = NULL;
 	temp = NULL;
 	if (access(cmd, F_OK) == 0)
-<<<<<<< HEAD
-		return (cmd);
-=======
 		return (ft_strjoin("/bin/", cmd));
->>>>>>> 1995049b4245b07f9e523da85495188c5a04e73a
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)

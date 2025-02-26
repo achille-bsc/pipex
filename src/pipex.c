@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:10:10 by abosc             #+#    #+#             */
-/*   Updated: 2025/02/13 19:44:40 by abosc            ###   ########.fr       */
+/*   Updated: 2025/02/24 01:30:07 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	start_pipex(t_values cmds, t_values files, char **env)
 		exit(1);
 	if (pid2 == 0)
 		parent(p_fd, fd, cmds, env);
-	close(fd[0]);
+	if (fd[0] != -1)
+		close(fd[0]);
 	close(fd[1]);
 	close(p_fd[0]);
 	close(p_fd[1]);

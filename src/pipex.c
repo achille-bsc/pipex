@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:10:10 by abosc             #+#    #+#             */
-/*   Updated: 2025/02/26 04:55:28 by abosc            ###   ########.fr       */
+/*   Updated: 2025/02/26 23:29:44 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ void	start_pipex(t_values cmds, t_values files, char **env)
 	int		p_fd[2];
 	pid_t	pid1;
 
-	// pid_t	pid2;
+	pid_t	pid2;
 	fd[0] = open(files.value1, O_RDONLY);
 	fd[1] = open(files.value2, O_CREAT | O_TRUNC | O_WRONLY, 0755);
+	if (fd[0] == -1 || fd[1] == -1)
+		exit(1);
 	if (pipe(p_fd) == -1)
 		exit(1);
 	pid1 = fork();
@@ -50,12 +52,12 @@ void	start_pipex(t_values cmds, t_values files, char **env)
 		exit(1);
 	if (pid1 == 0 && fd[0] != -1)
 		child(p_fd, fd, cmds, env);
-	parent(p_fd, fd, cmds, env);
-	// pid2 = fork();
-	// if (pid2 == -1)
-	// 	exit(1);
-	// if (pid2 == 0)
-	waitpid(pid1, NULL, 0);
-	// waitpid(pid2, NULL, 0);
+	pid2 = fork();
+	if (pid2 == -1)
+		exit(1);
+	if (pid2 == 0)
+		parent(p_fd, fd, cmds, env);
 	closer(fd, p_fd);
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
 }

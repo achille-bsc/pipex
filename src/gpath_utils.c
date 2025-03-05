@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 03:05:54 by abosc             #+#    #+#             */
-/*   Updated: 2025/02/26 03:06:03 by abosc            ###   ########.fr       */
+/*   Updated: 2025/03/04 23:25:32 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*gpath_end(char *path_str, char **path, char *cmd, int i)
 	if (!temp)
 		return (NULL);
 	free(path_str);
-	if (access(temp, F_OK) == 0)
+	if (access(temp, X_OK) == 0)
 	{
 		free_tab(path);
 		return (temp);

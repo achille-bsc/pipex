@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 03:05:54 by abosc             #+#    #+#             */
-/*   Updated: 2025/03/05 02:43:52 by abosc            ###   ########.fr       */
+/*   Updated: 2025/03/05 20:59:53 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ char	**truc(int i, char **env, char **path)
 	while (env[i++])
 	{
 		if (!env[i])
-			return (NULL);	
+			return (NULL);
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			path = ft_split(env[i] + 5, ':');
 			break ;
 		}
 	}
-	
 	return (path);
 }

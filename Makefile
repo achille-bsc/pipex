@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -O3 -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g
 # MLXFLAGS = -lmlx -lXext -lX11
 NAME = pipex
 

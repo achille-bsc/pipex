@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:02:39 by abosc             #+#    #+#             */
-/*   Updated: 2025/03/05 01:40:26 by abosc            ###   ########.fr       */
+/*   Updated: 2025/03/05 02:44:02 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ char	*get_path(char *cmd, char **env)
 	i = 0;
 	path = NULL;
 	path_str = NULL;
-	if (access(cmd, F_OK) == 0)
-		return (ft_strjoin("/bin/", cmd));
 	path = truc(i, env, path);
+	if (!path)
+		exit(1);
 	i = 0;
 	while (path[i])
 	{
@@ -61,6 +61,8 @@ char	*get_path(char *cmd, char **env)
 			return (temp);
 		i++;
 	}
+	if (access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
 	if (path)
 		free_tab(path);
 	return (NULL);

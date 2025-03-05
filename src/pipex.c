@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:10:10 by abosc             #+#    #+#             */
-/*   Updated: 2025/02/26 23:29:44 by abosc            ###   ########.fr       */
+/*   Updated: 2025/03/05 02:31:11 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,17 @@ void	pipex(char **argv, char **env)
 
 void	closer(int fd[2], int p_fd[2])
 {
-	// if (fd[0] != -1)
 	close(fd[0]);
-	// if (fd[1] != -1)
 	close(fd[1]);
 	close(p_fd[0]);
 	close(p_fd[1]);
+}
+
+void	closer2(int fd[2])
+{
+	if (fd[1])
+		close(fd[1]);
+	exit(1);
 }
 
 void	start_pipex(t_values cmds, t_values files, char **env)
@@ -39,12 +44,12 @@ void	start_pipex(t_values cmds, t_values files, char **env)
 	int		fd[2];
 	int		p_fd[2];
 	pid_t	pid1;
-
 	pid_t	pid2;
+
 	fd[0] = open(files.value1, O_RDONLY);
 	fd[1] = open(files.value2, O_CREAT | O_TRUNC | O_WRONLY, 0755);
 	if (fd[0] == -1 || fd[1] == -1)
-		exit(1);
+		closer2(fd);
 	if (pipe(p_fd) == -1)
 		exit(1);
 	pid1 = fork();

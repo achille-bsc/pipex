@@ -6,7 +6,7 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:03:14 by abosc             #+#    #+#             */
-/*   Updated: 2025/03/05 01:35:05 by abosc            ###   ########.fr       */
+/*   Updated: 2025/05/02 15:56:07 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int	verify_args(int argc, char **argv)
 {
 	if (argc != 5)
 	{
-		ft_printf("Error: Wrong number of arguments\n");
+		ft_putstr_fd("Error: Wrong number of arguments\n", 2);
 		return (0);
 	}
 	if (access_file(argv[1]) == -1)
-		ft_printf("Error: File %s does not exist\n", argv[1]);
+		ft_putstr_fd("Error: The file does not exist\n", 2);
 	return (1);
 }
 

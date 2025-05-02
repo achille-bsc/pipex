@@ -6,11 +6,22 @@
 /*   By: abosc <abosc@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:10:10 by abosc             #+#    #+#             */
-/*   Updated: 2025/03/19 23:26:15 by abosc            ###   ########.fr       */
+/*   Updated: 2025/05/02 15:56:27 by abosc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/pipex.h"
+
+void	checker(t_values cmds, t_values files)
+{
+	if ((!cmds.value1 || !cmds.value2 || !files.value1)
+		|| (cmds.value1[0] == '\0' || cmds.value2[0] == '\0'
+			|| files.value1[0] == '\0'))
+	{
+		ft_putstr_fd("Error: missing required arguments\n", 2);
+		exit(1);
+	}
+}
 
 void	pipex(char **argv, char **env)
 {
@@ -21,17 +32,24 @@ void	pipex(char **argv, char **env)
 	cmds.value2 = argv[3];
 	files.value1 = argv[1];
 	files.value2 = argv[4];
+	checker(cmds, files);
 	start_pipex(cmds, files, env);
 }
 
 void	closer(int fd[2], int p_fd[2])
 {
-	// if (fd[0] != -1)
 	close(fd[0]);
-	// if (fd[1] != -1)
 	close(fd[1]);
 	close(p_fd[0]);
 	close(p_fd[1]);
+}
+
+void	closer2(int fd[2])
+{
+	if (fd[1] != -1)
+		close(fd[1]);
+	close(fd[0]);
+	exit(1);
 }
 
 void	start_pipex(t_values cmds, t_values files, char **env)
@@ -39,12 +57,12 @@ void	start_pipex(t_values cmds, t_values files, char **env)
 	int		fd[2];
 	int		p_fd[2];
 	pid_t	pid1;
-
 	pid_t	pid2;
+
 	fd[0] = open(files.value1, O_RDONLY);
 	fd[1] = open(files.value2, O_CREAT | O_TRUNC | O_WRONLY, 0755);
 	if (fd[0] == -1 || fd[1] == -1)
-		exit(1);
+		closer2(fd);
 	if (pipe(p_fd) == -1)
 		exit(1);
 	pid1 = fork();
